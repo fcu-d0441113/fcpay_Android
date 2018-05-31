@@ -2,7 +2,10 @@ package com.example.root.fcpay.Order.OrderTable;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,26 +17,39 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.root.fcpay.CoreData.OrderDetail;
+import com.example.root.fcpay.Login.OAuthLoginViewController;
 import com.example.root.fcpay.Model.OrderDetailModel;
 import com.example.root.fcpay.Model.ProductModel;
 import com.example.root.fcpay.Order.OrderDetail.OrderDetailUIViewModel;
+import com.example.root.fcpay.Order.OrderRecord.OrderRecordViewModel;
 import com.example.root.fcpay.Order.PlentyOrder.OrderPlentyViewController;
+import com.example.root.fcpay.Profile.UserProfileViewController;
 import com.example.root.fcpay.R;
 
 public class OrderTableViewController extends AppCompatActivity {
 
-    ListView productListView;
-    ProductModel productModel = OrderTableViewModel.productModel;
+    private BottomNavigationView bnv;
+    private ListView productListView;
+    private Toolbar toolBar;
+    private ProductModel productModel = OrderTableViewModel.productModel;
     public static OrderDetailModel orderDetailModel = new OrderDetailModel();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_table_view_controller);
+        initComponent();
+        setEventListener();
+    }
+    private void initComponent(){
+        toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        bnv = (BottomNavigationView) findViewById(R.id.bottomNavigationView2);
         productListView = (ListView)findViewById(R.id.productListView);
-
         MyCustomAdapter myCustomAdapter = new MyCustomAdapter();
         productListView.setAdapter(myCustomAdapter);
+    }
+
+    private void setEventListener(){
         productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -44,19 +60,38 @@ public class OrderTableViewController extends AppCompatActivity {
                 else{
                     orderDetailModel.clear();
                     orderDetailModel.addOrderDetail(new OrderDetail(
-                                                        productModel.getID(i),
-                                                        productModel.getName(i),
-                                                        productModel.getPrice(i),
-                                                        productModel.getManufacturerName(i),
-                                                        productModel.getIntroduce(i),
-                                                        "1"
-                                                    ));
+                            productModel.getID(i),
+                            productModel.getName(i),
+                            productModel.getPrice(i),
+                            productModel.getManufacturerName(i),
+                            productModel.getIntroduce(i),
+                            "1"
+                    ));
                     Intent OrderDetailUIViewModel = new Intent(OrderTableViewController.this, OrderDetailUIViewModel.class);
                     startActivity(OrderDetailUIViewModel);
                 }
                 view.setSelected(true);
             }
         });
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(
+                    @NonNull
+                            MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        break;
+                    case R.id.list:
+                        startActivity(new Intent(OrderTableViewController.this, OrderRecordViewModel.class));
+                        break;
+                    case R.id.profile:
+                        startActivity(new Intent(OrderTableViewController.this, UserProfileViewController.class));
+                        break;
+                }
+                return true;
+            }
+        });
+        bnv.getMenu().getItem(0).setChecked(true);
     }
 
     private class MyCustomAdapter extends BaseAdapter {
@@ -103,12 +138,22 @@ public class OrderTableViewController extends AppCompatActivity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_product_table, menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        startActivity(new Intent(OrderTableViewController.this, OrderTableViewModel.class ));
-        return true;
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                startActivity(new Intent(OrderTableViewController.this, OrderTableViewModel.class ));
+                return true;
+            case android.R.id.home:
+                startActivity(new Intent(OrderTableViewController.this,OAuthLoginViewController.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

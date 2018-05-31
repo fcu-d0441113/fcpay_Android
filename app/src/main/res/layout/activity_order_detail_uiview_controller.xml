@@ -6,6 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".Order.OrderDetail.OrderDetailUIViewController">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="@drawable/ic_back"
+        android:minHeight="?actionBarSize">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="訂購餐點"
+            android:textColor="@color/golden"
+            android:textSize="20sp"
+            android:textStyle="bold"></TextView>
+
+    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/orderDetailListView"
@@ -15,6 +34,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
         app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

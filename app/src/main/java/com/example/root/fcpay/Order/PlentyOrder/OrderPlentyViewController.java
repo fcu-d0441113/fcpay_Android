@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,27 +25,42 @@ import com.example.root.fcpay.CoreData.OrderDetail;
 import com.example.root.fcpay.Model.OrderDetailModel;
 import com.example.root.fcpay.Model.ProductModel;
 import com.example.root.fcpay.Order.OrderDetail.OrderDetailUIViewModel;
+import com.example.root.fcpay.Order.OrderRecord.OrderRecordViewModel;
 import com.example.root.fcpay.Order.OrderTable.OrderTableViewController;
 import com.example.root.fcpay.Order.OrderTable.OrderTableViewModel;
+import com.example.root.fcpay.Profile.UserProfileViewController;
 import com.example.root.fcpay.R;
 
 public class OrderPlentyViewController extends AppCompatActivity {
 
-    ProductModel productModel = OrderTableViewModel.productModel;
-    public OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
-    static Dialog dialog;
-    int index;
-    ListView plentyListView;
-    MyCustomAdapter myCustomAdapter;
+    private BottomNavigationView bnv;
+    private Toolbar toolBar;
+    private ProductModel productModel = OrderTableViewModel.productModel;
+    private OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
+    private static Dialog dialog;
+    private int index;
+    private ListView plentyListView;
+    private MyCustomAdapter myCustomAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_plenty_view_controller);
-        plentyListView = (ListView)findViewById(R.id.plentyListView);
+        initComponent();
         productModel.clearQuantity();
+        setEventListener();
+    }
+
+    private void initComponent(){
+        toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        bnv = (BottomNavigationView) findViewById(R.id.bottomNavigationView2);
+        plentyListView = (ListView)findViewById(R.id.plentyListView);
         myCustomAdapter = new MyCustomAdapter();
         plentyListView.setAdapter(myCustomAdapter);
+    }
+
+    private void setEventListener(){
         plentyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -50,8 +68,27 @@ public class OrderPlentyViewController extends AppCompatActivity {
                 showDialog();
             }
         });
-
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(
+                    @NonNull
+                            MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        break;
+                    case R.id.list:
+                        startActivity(new Intent(OrderPlentyViewController.this, OrderRecordViewModel.class));
+                        break;
+                    case R.id.profile:
+                        startActivity(new Intent(OrderPlentyViewController.this, UserProfileViewController.class));
+                        break;
+                }
+                return true;
+            }
+        });
+        bnv.getMenu().getItem(0).setChecked(true);
     }
+
     public void showDialog(){
 
         final Dialog dialog = new Dialog(OrderPlentyViewController.this);
@@ -79,7 +116,6 @@ public class OrderPlentyViewController extends AppCompatActivity {
         });
         dialog.show();
     }
-
 
     private class MyCustomAdapter extends BaseAdapter {
         private int mCurrentItem=0;
@@ -119,31 +155,41 @@ public class OrderPlentyViewController extends AppCompatActivity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_order_plenty, menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        orderDetailModel.clear();
-        boolean isNull = true;
-        for(int i = 0;i<productModel.size();i++) {
-            if(Integer.valueOf(productModel.getQuantity(i)) != 0) {
-                orderDetailModel.addOrderDetail(new OrderDetail(
-                        productModel.getID(i),
-                        productModel.getName(i),
-                        productModel.getPrice(i),
-                        productModel.getManufacturerName(i),
-                        productModel.getIntroduce(i),
-                        productModel.getQuantity(i)));
-                isNull = false;
-            }
+
+        switch (item.getItemId()) {
+            case R.id.toDetail:
+                orderDetailModel.clear();
+                boolean isNull = true;
+                for(int i = 0;i<productModel.size();i++) {
+                    if(Integer.valueOf(productModel.getQuantity(i)) != 0) {
+                        orderDetailModel.addOrderDetail(new OrderDetail(
+                                productModel.getID(i),
+                                productModel.getName(i),
+                                productModel.getPrice(i),
+                                productModel.getManufacturerName(i),
+                                productModel.getIntroduce(i),
+                                productModel.getQuantity(i)));
+                        isNull = false;
+                    }
+                }
+                if(isNull == true){
+                    showErrorDialog();
+                }
+                else {
+                    startActivity(new Intent(OrderPlentyViewController.this, OrderDetailUIViewModel.class));
+                }
+                return true;
+            case android.R.id.home:
+                startActivity(new Intent(OrderPlentyViewController.this,OrderTableViewModel.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        if(isNull == true){
-            showErrorDialog();
-        }
-        else{
-            startActivity(new Intent(OrderPlentyViewController.this, OrderDetailUIViewModel.class));
-        }
-        return true;
     }
 
     private void showErrorDialog() {

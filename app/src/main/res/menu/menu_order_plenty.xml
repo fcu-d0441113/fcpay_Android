@@ -4,5 +4,5 @@
     <item android:id="@+id/toDetail"
         android:title="確認"
         yourapp:showAsAction="ifRoom"  />
-    ...
+
 </menu>

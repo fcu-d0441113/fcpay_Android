@@ -1,18 +1,12 @@
 package com.example.root.fcpay.Order.OrderDetail;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.example.root.fcpay.CoreData.OrderDetailCheckItem;
 import com.example.root.fcpay.Model.OrderDetailModel;
 import com.example.root.fcpay.Order.OrderTable.OrderTableViewController;
-import com.example.root.fcpay.Payment.SunnyBankPaymentVM;
 import com.example.root.fcpay.R;
 
 import java.util.ArrayList;
@@ -20,7 +14,7 @@ import java.util.ArrayList;
 public class OrderDetailUIViewModel extends AppCompatActivity {
 
 
-    public OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
+    private OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
     public static ArrayList<OrderDetailCheckItem> orderDetailCheckItems = new ArrayList<>();
 
     @Override

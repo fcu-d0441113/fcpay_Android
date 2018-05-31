@@ -14,4 +14,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.Toolbar
+        android:background="?attr/colorPrimary"
+        android:id="@+id/toolBar"
+        android:minHeight="?actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="OAuth登入"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/golden"
+            android:gravity="center_horizontal"
+            android:id="@+id/toolbar_title"></TextView>
+    </android.support.v7.widget.Toolbar>
+
 </android.support.constraint.ConstraintLayout>

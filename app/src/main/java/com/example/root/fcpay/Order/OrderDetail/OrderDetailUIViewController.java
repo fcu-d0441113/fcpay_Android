@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.root.fcpay.CoreData.OrderDetailCheckItem;
+import com.example.root.fcpay.Order.OrderTable.OrderTableViewModel;
 import com.example.root.fcpay.Payment.SunnyBankPaymentVM;
 import com.example.root.fcpay.R;
 
@@ -22,24 +24,24 @@ import java.util.ArrayList;
 
 public class OrderDetailUIViewController extends AppCompatActivity {
 
-    public  ArrayList<OrderDetailCheckItem> orderDetailCheckItems = OrderDetailUIViewModel.orderDetailCheckItems;
-    ListView orderDetailListView;
+    private Toolbar toolBar;
+    private  ArrayList<OrderDetailCheckItem> orderDetailCheckItems = OrderDetailUIViewModel.orderDetailCheckItems;
+    private ListView orderDetailListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail_uiview_controller);
-        orderDetailListView = (ListView)findViewById(R.id.orderDetailListView);
 
+        initComponent();
+    }
+
+    private void initComponent() {
+        toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        orderDetailListView = (ListView)findViewById(R.id.orderDetailListView);
         MyCustomAdapter myCustomAdapter = new MyCustomAdapter();
         orderDetailListView.setAdapter(myCustomAdapter);
-        /*orderDetailListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                view.setSelected(true);
-            }
-        });*/
     }
 
     private class MyCustomAdapter extends BaseAdapter {
@@ -99,11 +101,21 @@ public class OrderDetailUIViewController extends AppCompatActivity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_order_detail_ui_view, menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        showDialog();
-        return true;
+
+        switch (item.getItemId()) {
+            case R.id.toPayment:
+                showDialog();
+                return true;
+            case android.R.id.home:
+                startActivity(new Intent(OrderDetailUIViewController.this,OrderTableViewModel.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

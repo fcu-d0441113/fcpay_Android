@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,16 +19,13 @@ import org.apache.http.util.EncodingUtils;
 
 public class SunnyBankPaymentVC extends AppCompatActivity {
 
-    WebView iSunnyWebView;
-    public ISunnyData iSunnyData = SunnyBankPaymentVM.iSunnyData;
+    private WebView iSunnyWebView;
+    private ISunnyData iSunnyData = SunnyBankPaymentVM.iSunnyData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sunny_bank_payment_vc);
-
-        iSunnyWebView = (WebView)findViewById(R.id.iSunnyWebView);
-
-        webviewsetting();
+        initComponent();
         String url = "https://isunnytrain.sunnybank.com.tw/SunnyPay/PSPay.do";
         String postDate = "memberID="+iSunnyData.memberId+
                 "&procCode="+iSunnyData.procCode+
@@ -39,6 +37,12 @@ public class SunnyBankPaymentVC extends AppCompatActivity {
                 "&noticeURL="+iSunnyData.noticeURL;
         iSunnyWebView.postUrl(url, EncodingUtils.getBytes(postDate, "utf-8"));
     }
+
+    private void initComponent() {
+        iSunnyWebView = (WebView)findViewById(R.id.iSunnyWebView);
+        webviewsetting();
+    }
+
     private void webviewsetting() {
         WebSettings webSettings = iSunnyWebView.getSettings();
         webSettings.setSavePassword(false);
@@ -58,11 +62,17 @@ public class SunnyBankPaymentVC extends AppCompatActivity {
                 }
                 else if(url.toString().startsWith("https://isunnytrain.sunnybank.com.tw/SunnyPay/PSPay.do")){
 
-                    //view.loadUrl("javascript:document.getElementById(\"user_name\").value= '"+user+"';document.getElementById(\"user_passwd\").value= '"+pwd+"';");
+                    iSunnyWebView.evaluateJavascript("javascript:document.getElementsByName('user_name')[0].value='"+user+"';" +
+                            "document.getElementsByName('user_passwd')[0].value='"+pwd+"';", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String value) {
+                        }
+                    });
+
                 }
-                else if(url.toString().startsWith("https://isunnytrain.sunnybank.com.tw/SunnyPay/PSPayL.do")) {
-                    //view.loadUrl("javascript:document.getElementById(\"s_pay_pwd\").value= '"+pwd+"';");
-                }
+                /*else if(url.toString().startsWith("https://isunnytrain.sunnybank.com.tw/SunnyPay/PSPayL.do")) {
+
+                }*/
             }
         });
     }

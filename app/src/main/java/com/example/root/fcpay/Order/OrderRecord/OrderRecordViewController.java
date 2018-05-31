@@ -4,7 +4,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.root.fcpay.CoreData.OrderRecord;
+import com.example.root.fcpay.Order.OrderTable.OrderTableViewModel;
+import com.example.root.fcpay.Profile.UserProfileViewController;
 import com.example.root.fcpay.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -26,18 +31,30 @@ import java.util.ArrayList;
 
 public class OrderRecordViewController extends AppCompatActivity {
 
-    ListView orderRecordListView;
-    public ArrayList<OrderRecord> orderRecords = OrderRecordViewModel.orderRecords;
+    private BottomNavigationView bnv;
+    private Toolbar toolBar;
+    private ListView orderRecordListView;
+    private ArrayList<OrderRecord> orderRecords = OrderRecordViewModel.orderRecords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_record_view_controller);
 
-        orderRecordListView = (ListView)findViewById(R.id.orderRecordListView);
+        initComponent();
+        setEventListener();
+    }
 
+    private void initComponent() {
+        toolBar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolBar);
+        bnv = (BottomNavigationView) findViewById(R.id.bottomNavigationView2);
+        orderRecordListView = (ListView)findViewById(R.id.orderRecordListView);
         MyCustomAdapter myCustomAdapter = new MyCustomAdapter();
         orderRecordListView.setAdapter(myCustomAdapter);
+    }
+
+    private void setEventListener(){
         orderRecordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -45,6 +62,25 @@ public class OrderRecordViewController extends AppCompatActivity {
                 view.setSelected(true);
             }
         });
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(
+                    @NonNull
+                            MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        startActivity(new Intent(OrderRecordViewController.this, OrderTableViewModel.class));
+                        break;
+                    case R.id.list:
+                        break;
+                    case R.id.profile:
+                        startActivity(new Intent(OrderRecordViewController.this, UserProfileViewController.class));
+                        break;
+                }
+                return true;
+            }
+        });
+        bnv.getMenu().getItem(1).setChecked(true);
     }
 
     private class MyCustomAdapter extends BaseAdapter {
@@ -114,12 +150,21 @@ public class OrderRecordViewController extends AppCompatActivity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_order_record, menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        startActivity(new Intent(OrderRecordViewController.this, OrderRecordViewModel.class ));
-        return true;
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                startActivity(new Intent(OrderRecordViewController.this, OrderRecordViewModel.class ));
+                return true;
+            case android.R.id.home:
+                startActivity(new Intent(OrderRecordViewController.this,OrderTableViewModel.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

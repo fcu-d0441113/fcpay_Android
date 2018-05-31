@@ -1,9 +1,11 @@
 package com.example.root.fcpay.Order.OrderRecord;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,16 +20,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrderRecordViewModel extends AppCompatActivity {
 
-    RequestQueue mQueue;
+    private RequestQueue mQueue;
     public static ArrayList<OrderRecord> orderRecords = new ArrayList<>();
+    private SharedPreferences userProfileManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_record_view_model);
+        userProfileManager = getSharedPreferences("userProfile",0);
         mQueue = Volley.newRequestQueue(this);
         jsonParse();
     }
@@ -88,7 +94,15 @@ public class OrderRecordViewModel extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("user_id", userProfileManager.getString("NID","").replace("\"",""));
+                headers.put("user_auth", userProfileManager.getString("token","").replace("\"",""));
+                return headers;
+            }
+        };
 
         mQueue.add(request);
     }

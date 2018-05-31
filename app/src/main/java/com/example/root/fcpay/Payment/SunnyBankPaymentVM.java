@@ -1,9 +1,11 @@
 package com.example.root.fcpay.Payment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,17 +20,22 @@ import com.example.root.fcpay.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SunnyBankPaymentVM extends AppCompatActivity {
 
-    RequestQueue mQueue;
+    private RequestQueue mQueue;
     public static ISunnyData iSunnyData;
-    public OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
+    private OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
+    private SharedPreferences userProfileManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sunny_bank_payment_vm);
         mQueue = Volley.newRequestQueue(this);
+        userProfileManager = getSharedPreferences("userProfile",0);
         jsonParse();
     }
     private void jsonParse() {
@@ -81,8 +88,15 @@ public class SunnyBankPaymentVM extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
-
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("user_id", userProfileManager.getString("NID","").replace("\"",""));
+                headers.put("user_auth", userProfileManager.getString("token","").replace("\"",""));
+                return headers;
+            }
+        };
         mQueue.add(request);
     }
 }
