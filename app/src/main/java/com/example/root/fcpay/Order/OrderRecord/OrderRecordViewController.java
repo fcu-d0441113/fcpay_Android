@@ -106,16 +106,20 @@ public class OrderRecordViewController extends AppCompatActivity {
 
             view = getLayoutInflater().inflate(R.layout.layout_order_record_body, null);
             TextView orderId = (TextView) view.findViewById(R.id.orderId);
-            orderId.setText(orderRecords.get(i).orderDate);
+            TextView date = (TextView) view.findViewById(R.id.date);
+            TextView count = (TextView) view.findViewById(R.id.count);
+            orderId.setText("共NT$ "+orderRecords.get(i).getTotalOrderPrice());
+            date.setText(orderRecords.get(i).orderDate);
+            count.setText("共有 "+orderRecords.get(i).getTotalOrderNumber()+"個便當");
             ImageView icon = (ImageView) view.findViewById(R.id.icon);
 
             if(orderRecords.get(i).isPickup()) {
-                icon.setImageResource(R.drawable.ic_pickup);
+                icon.setImageResource(R.drawable.check);
             }
             else{
-                icon.setImageResource(R.drawable.ic_waiting_pickup);
+                //icon.setImageResource(R.drawable.ic_waiting_pickup);
             }
-
+            notifyDataSetChanged();
             return view;
         }
     }
@@ -139,9 +143,18 @@ public class OrderRecordViewController extends AppCompatActivity {
         TextView orderNumber = (TextView)dialog.findViewById(R.id.dialogTotalOrderNumber);
         TextView orderPrice = (TextView)dialog.findViewById(R.id.dialogTotalOrderPrice);
 
+        //處理各項目的字串，合成一個String
+        String detail = "";
+        int voi = orderRecords.get(index).details.size();
+        for(int i=0;i<orderRecords.get(index).details.size();i++){
+            detail = detail + orderRecords.get(index).details.get(i).quantity + "個 ";
+            detail = detail + orderRecords.get(index).details.get(i).manufacturer;
+            detail = detail + " 的 " + orderRecords.get(index).details.get(i).product + "\n";
+        }
+
         orderId.setText(orderRecords.get(index).orderId);
-        orderNumber.setText("便當總數量: "+Integer.toString(orderRecords.get(index).getTotalOrderNumber()));
-        orderPrice.setText("便當總價格: NT "+Integer.toString(orderRecords.get(index).getTotalOrderPrice())+"$");
+        orderNumber.setText(detail);  //"便當總數量: "+Integer.toString(orderRecords.get(index).getTotalOrderNumber())
+        orderPrice.setText("共有 "+Integer.toString(orderRecords.get(index).getTotalOrderNumber())+" 個便當\n便當總價格: NT "+Integer.toString(orderRecords.get(index).getTotalOrderPrice())+"$");
 
         dialog.show();
     }
@@ -157,6 +170,7 @@ public class OrderRecordViewController extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
+                finish();
                 startActivity(new Intent(OrderRecordViewController.this, OrderRecordViewModel.class ));
                 return true;
             case android.R.id.home:

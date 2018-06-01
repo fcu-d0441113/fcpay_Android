@@ -76,6 +76,7 @@ public class OAuthLoginViewController extends AppCompatActivity {
                     Toast toast = Toast.makeText(OAuthLoginViewController.this,
                             "歡迎使用 FC Order!! "+userProfileManager.getString("NID","").replace("\"","")+"!!", Toast.LENGTH_LONG);
                     toast.show();
+                    finish();   //完成，關閉頁面
                     startActivity(new Intent(OAuthLoginViewController.this, OrderTableViewModel.class));
                 }
             }

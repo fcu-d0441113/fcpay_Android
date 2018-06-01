@@ -55,6 +55,7 @@ public class OrderRecordViewModel extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
+                            orderRecords.clear();
                             for (int i = 0; i < response.length(); i++) {
 
                                 ArrayList<OrderRecordDetail> orderRecordDetails = new ArrayList<>();
@@ -84,10 +85,11 @@ public class OrderRecordViewModel extends AppCompatActivity {
                                         orderRecordDetails
                                 ));
                             }
-                            startActivity(new Intent(OrderRecordViewModel.this, OrderRecordViewController.class));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        finish();   //完成，將空白頁面刪除
+                        startActivity(new Intent(OrderRecordViewModel.this, OrderRecordViewController.class));
                     }
                 }, new Response.ErrorListener() {
             @Override

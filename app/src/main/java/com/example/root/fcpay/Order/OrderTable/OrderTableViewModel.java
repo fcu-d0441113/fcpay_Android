@@ -58,6 +58,7 @@ public class OrderTableViewModel extends AppCompatActivity {
                                         jsonObject.getString("manufacturer"),
                                         jsonObject.getString("introduction")));
                             }
+                            finish();      //完成，關閉頁面
                             startActivity(new Intent(OrderTableViewModel.this, OrderTableViewController.class));
                         } catch (JSONException e) {
                             e.printStackTrace();

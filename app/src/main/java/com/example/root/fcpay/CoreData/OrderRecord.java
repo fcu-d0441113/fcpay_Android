@@ -46,7 +46,8 @@ public class OrderRecord {
     public int getTotalOrderPrice(){
         int result = 0;
         for(int i=0; i<details.size(); i++){
-            result += Integer.valueOf(details.get(i).price);
+
+            result += Integer.valueOf(details.get(i).price)*Integer.valueOf(details.get(i).quantity);
         }
         return result;
     }

@@ -146,6 +146,7 @@ public class OrderTableViewController extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
+                finish();      //完成，關閉頁面
                 startActivity(new Intent(OrderTableViewController.this, OrderTableViewModel.class ));
                 return true;
             case android.R.id.home:
