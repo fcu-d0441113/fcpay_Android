@@ -92,7 +92,7 @@ public class UserProfileViewController extends AppCompatActivity {
         userProfileData.add(new UserProfileData("NID:", userProfileManager.getString("NID","尚未設置").replace("\"",""),"2"));
         userProfileData.add(new UserProfileData("iSunny資訊", "","1"));
         userProfileData.add(new UserProfileData("iSunny帳號:", userProfileManager.getString("iSunnyAC","尚未設置").replace("\"",""),"2"));
-        userProfileData.add(new UserProfileData("iSunny密碼:", userProfileManager.getString("iSunnyPW","尚未設置").replace("\"",""),"2"));
+        userProfileData.add(new UserProfileData("iSunny密碼:", userProfileManager.getString("iSunnyPW","尚未設置").replace("\"","").replaceAll("\\w","*"),"2"));
         userProfileData.add(new UserProfileData("領貨資訊", "","1"));
         userProfileData.add(new UserProfileData("地點:", userProfileManager.getString("location","尚未設置").replace("\"",""),"2"));
         userProfileData.add(new UserProfileData("時間:", userProfileManager.getString("time","尚未設置").replace("\"",""),"2"));
@@ -168,6 +168,9 @@ public class UserProfileViewController extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_edit_user_profile);
         edit_iSunnyAC = (EditText) dialog.findViewById(R.id.edit_iSunnyAC);
         edit_iSunnyPW = (EditText) dialog.findViewById(R.id.edit_iSunnyPW);
+
+        edit_iSunnyAC.setText(userProfileManager.getString("iSunnyAC","尚未設置").replace("\"",""));
+        edit_iSunnyPW.setText(userProfileManager.getString("iSunnyPW","尚未設置").replace("\"","").replaceAll("\\w","*"));
 
         edit_location = (Spinner) dialog.findViewById(R.id.edit_location);
         location = ArrayAdapter.createFromResource(

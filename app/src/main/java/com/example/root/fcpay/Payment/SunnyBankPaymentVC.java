@@ -2,6 +2,7 @@ package com.example.root.fcpay.Payment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,12 +21,14 @@ import org.apache.http.util.EncodingUtils;
 public class SunnyBankPaymentVC extends AppCompatActivity {
 
     private WebView iSunnyWebView;
+    private SharedPreferences userProfileManager;
     private ISunnyData iSunnyData = SunnyBankPaymentVM.iSunnyData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sunny_bank_payment_vc);
         initComponent();
+        userProfileManager = getSharedPreferences("userProfile",0);
         String url = "https://isunnytrain.sunnybank.com.tw/SunnyPay/PSPay.do";
         String postDate = "memberID="+iSunnyData.memberId+
                 "&procCode="+iSunnyData.procCode+
@@ -62,8 +65,8 @@ public class SunnyBankPaymentVC extends AppCompatActivity {
                 }
                 else if(url.toString().startsWith("https://isunnytrain.sunnybank.com.tw/SunnyPay/PSPay.do")){
 
-                    iSunnyWebView.evaluateJavascript("javascript:document.getElementsByName('user_name')[0].value='"+user+"';" +
-                            "document.getElementsByName('user_passwd')[0].value='"+pwd+"';", new ValueCallback<String>() {
+                    iSunnyWebView.evaluateJavascript("javascript:document.getElementsByName('user_name')[0].value='"+userProfileManager.getString("iSunnyAC","").replace("\"","")+"';" +
+                            "document.getElementsByName('user_passwd')[0].value='"+userProfileManager.getString("iSunnyPW","").replace("\"","")+"';", new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String value) {
                         }

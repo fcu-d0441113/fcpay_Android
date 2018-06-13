@@ -51,7 +51,7 @@ public class OAuthLoginViewController extends AppCompatActivity {
                 if(url.toString().startsWith("https://testapi.kid7.club/fcuOAuth/Login.aspx")){
 
                     _webview.evaluateJavascript("javascript:document.getElementsByName('nid')[0].value='"+userProfileManager.getString("NID","").replace("\"","")+"';" +
-                            "document.getElementsByName('password')[0].value='1234';", new ValueCallback<String>() {
+                            "document.getElementsByName('password')[0].value='"+userProfileManager.getString("password","").replace("\"","")+"';", new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String value) {
                         }

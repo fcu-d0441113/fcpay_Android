@@ -56,7 +56,7 @@ public class SunnyBankPaymentVM extends AppCompatActivity {
         try {
             parameters.put("paymentType", "1");
             parameters.put("location", "0");
-            parameters.put("memberId", "T03291");
+            parameters.put("memberId", userProfileManager.getString("NID","").replace("\"",""));
             parameters.put("product", products);
             parameters.put("memo", "");
         }catch (Exception e){

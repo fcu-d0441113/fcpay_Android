@@ -23,8 +23,8 @@ public class OrderDetailUIViewModel extends AppCompatActivity {
         setContentView(R.layout.activity_order_detail_uiview_model);
 
         buildData();
-        Intent OrderDetailUIViewController = new Intent(OrderDetailUIViewModel.this, OrderDetailUIViewController.class);
-        startActivity(OrderDetailUIViewController);
+        finish();   //完成，將空白頁面刪除
+        startActivity(new Intent(OrderDetailUIViewModel.this, OrderDetailUIViewController.class));
     }
 
     private void buildData() {

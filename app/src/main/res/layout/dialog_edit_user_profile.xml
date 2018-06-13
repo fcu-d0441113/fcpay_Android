@@ -44,6 +44,7 @@
         android:layout_toRightOf="@id/iSunnyPW"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="10dp"
+        android:inputType="textPassword"
         />
 
     <TextView
