@@ -86,6 +86,7 @@ public class SunnyBankPaymentVC extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        finish();   //結束，關閉頁面
                         startActivity(new Intent(SunnyBankPaymentVC.this, OrderTableViewController.class));
                     }
                 }).setMessage("已附款成功! 交易金額: NT "+iSunnyData.amount+"$\n將跳回菜單頁").create();

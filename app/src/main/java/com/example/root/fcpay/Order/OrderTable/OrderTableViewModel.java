@@ -1,9 +1,12 @@
 package com.example.root.fcpay.Order.OrderTable;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -69,6 +72,8 @@ public class OrderTableViewModel extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        //處理錯誤，並關閉頁面
+                        showErrorDialog(Integer.toString(error.networkResponse.statusCode),new String(error.networkResponse.data));
                     }
                 }){
             @Override
@@ -80,5 +85,20 @@ public class OrderTableViewModel extends AppCompatActivity {
             }
         };
         mQueue.add(request);
+    }
+
+    //處理錯誤
+    private void showErrorDialog(String statusCode,String errorMessage) {
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("錯誤")
+                .setMessage(statusCode + " , " + errorMessage.substring(12, errorMessage.length()-2) + ".")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                }).create();
+        dialog.show();
     }
 }

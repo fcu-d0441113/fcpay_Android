@@ -82,9 +82,11 @@ public class OrderTableViewController extends AppCompatActivity {
                     case R.id.home:
                         break;
                     case R.id.list:
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(OrderTableViewController.this, OrderRecordViewModel.class));
                         break;
                     case R.id.profile:
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(OrderTableViewController.this, UserProfileViewController.class));
                         break;
                 }
@@ -150,6 +152,7 @@ public class OrderTableViewController extends AppCompatActivity {
                 startActivity(new Intent(OrderTableViewController.this, OrderTableViewModel.class ));
                 return true;
             case android.R.id.home:
+                finish();       //完成，關閉頁面
                 startActivity(new Intent(OrderTableViewController.this,OAuthLoginViewController.class));
                 return true;
             default:

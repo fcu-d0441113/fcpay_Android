@@ -73,9 +73,11 @@ public class UserProfileViewController extends AppCompatActivity {
                             MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(UserProfileViewController.this, OrderTableViewModel.class));
                         break;
                     case R.id.list:
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(UserProfileViewController.this, OrderRecordViewModel.class));
                         break;
                     case R.id.profile:
@@ -154,6 +156,7 @@ public class UserProfileViewController extends AppCompatActivity {
                 showDialog();
                 return true;
             case android.R.id.home:
+                finish();   //完成，結束頁面
                 startActivity(new Intent(UserProfileViewController.this,OrderTableViewModel.class));
                 return true;
             default:
@@ -204,6 +207,7 @@ public class UserProfileViewController extends AppCompatActivity {
                 userProfileManager.edit().putString("time",time.getItem(edit_time.getLastVisiblePosition()).toString()).commit();
                 userProfileManager.edit().putString("paymentType",paymentType.getItem(edit_paymentType.getLastVisiblePosition()).toString()).commit();
                 dialog.dismiss();
+                finish();   //完成，存擋並重新整理頁面
                 startActivity(new Intent(UserProfileViewController.this,UserProfileViewController.class));
             }
         });

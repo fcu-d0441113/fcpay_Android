@@ -89,6 +89,7 @@ public class OrderDetailUIViewController extends AppCompatActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(OrderDetailUIViewController.this,SunnyBankPaymentVM.class));
                     }
 
@@ -112,7 +113,8 @@ public class OrderDetailUIViewController extends AppCompatActivity {
                 showDialog();
                 return true;
             case android.R.id.home:
-                startActivity(new Intent(OrderDetailUIViewController.this,OrderTableViewModel.class));
+                finish();   //關閉頁面
+                //startActivity(new Intent(OrderDetailUIViewController.this,OrderTableViewModel.class));        不必開新的頁面
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -181,11 +181,13 @@ public class OrderPlentyViewController extends AppCompatActivity {
                     showErrorDialog();
                 }
                 else {
+                    finish(); //結束，關閉頁面
                     startActivity(new Intent(OrderPlentyViewController.this, OrderDetailUIViewModel.class));
                 }
                 return true;
             case android.R.id.home:
-                startActivity(new Intent(OrderPlentyViewController.this,OrderTableViewModel.class));
+                finish();   //上一頁，關閉頁面
+                //startActivity(new Intent(OrderPlentyViewController.this,OrderTableViewModel.class));  不必開新的頁面
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -69,11 +69,13 @@ public class OrderRecordViewController extends AppCompatActivity {
                             MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(OrderRecordViewController.this, OrderTableViewModel.class));
                         break;
                     case R.id.list:
                         break;
                     case R.id.profile:
+                        finish();   //完成，關閉頁面
                         startActivity(new Intent(OrderRecordViewController.this, UserProfileViewController.class));
                         break;
                 }
@@ -170,10 +172,11 @@ public class OrderRecordViewController extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                finish();
+                finish();       //重新整理，重新請求一次
                 startActivity(new Intent(OrderRecordViewController.this, OrderRecordViewModel.class ));
                 return true;
             case android.R.id.home:
+                finish();   //完成，結束頁面
                 startActivity(new Intent(OrderRecordViewController.this,OrderTableViewModel.class));
                 return true;
             default:
