@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.root.fcpay.Payment.LinePay.LinePayPaymentVM;
 import com.example.root.fcpay.Payment.iSunny.SunnyBankPaymentVM;
 import com.example.root.fcpay.R;
 
@@ -81,7 +82,15 @@ public class PaymentTypeController extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
                         intent.putExtra("PAYMENTTYPE", paymentType);
-                        intent.setClass(PaymentTypeController.this, SunnyBankPaymentVM.class);
+                        if (paymentType == 1) {
+                            intent.setClass(PaymentTypeController.this, SunnyBankPaymentVM.class);
+                        } else if (paymentType == 2) {
+
+                        } else if (paymentType == 3) {
+                            intent.setClass(PaymentTypeController.this, LinePayPaymentVM.class);
+                        } else {
+
+                        }
                         startActivity(intent);
                         finish();
                     }

@@ -29,7 +29,10 @@
         <activity android:name=".Order.OrderRecord.OrderRecordViewModel" />
         <activity android:name=".Order.OrderRecord.OrderRecordViewController" />
         <activity android:name=".Profile.UserProfileViewController" />
-        <activity android:name=".Payment.Type.PaymentTypeController"></activity>
+        <activity android:name=".Payment.Type.PaymentTypeController" />
+        <activity android:name=".Payment.LinePay.LinePayPaymentVM" />
+        <activity android:name=".Payment.LinePay.LinePayPaymentVC" />
+        <activity android:name=".Payment.LinePay.LinePayPaymentConfirm"></activity>
     </application>
 
 </manifest>

@@ -79,6 +79,7 @@ public class SunnyBankPaymentVC extends AppCompatActivity {
             }
         });
     }
+
     private void showFinishedDialog() {
 
         AlertDialog dialog = new AlertDialog.Builder(this).setTitle("付款完成")
