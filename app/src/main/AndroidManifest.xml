@@ -24,11 +24,12 @@
         <activity android:name=".Order.OrderDetail.OrderDetailUIViewModel" />
         <activity android:name=".Order.OrderDetail.OrderDetailUIViewController" />
         <activity android:name=".Order.PlentyOrder.OrderPlentyViewController" />
-        <activity android:name=".Payment.SunnyBankPaymentVM" />
-        <activity android:name=".Payment.SunnyBankPaymentVC" />
+        <activity android:name=".Payment.iSunny.SunnyBankPaymentVM" />
+        <activity android:name=".Payment.iSunny.SunnyBankPaymentVC" />
         <activity android:name=".Order.OrderRecord.OrderRecordViewModel" />
         <activity android:name=".Order.OrderRecord.OrderRecordViewController" />
-        <activity android:name=".Profile.UserProfileViewController"></activity>
+        <activity android:name=".Profile.UserProfileViewController" />
+        <activity android:name=".Payment.Type.PaymentTypeController"></activity>
     </application>
 
 </manifest>

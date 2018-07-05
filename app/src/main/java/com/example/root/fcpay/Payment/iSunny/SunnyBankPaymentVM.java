@@ -1,4 +1,4 @@
-package com.example.root.fcpay.Payment;
+package com.example.root.fcpay.Payment.iSunny;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +31,7 @@ public class SunnyBankPaymentVM extends AppCompatActivity {
     public static ISunnyData iSunnyData;
     private OrderDetailModel orderDetailModel = OrderTableViewController.orderDetailModel;
     private SharedPreferences userProfileManager;
+    private int paymentType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,11 @@ public class SunnyBankPaymentVM extends AppCompatActivity {
         setContentView(R.layout.activity_sunny_bank_payment_vm);
         mQueue = Volley.newRequestQueue(this);
         userProfileManager = getSharedPreferences("userProfile",0);
+        Intent intent = getIntent();
+        paymentType = intent.getIntExtra("PAYMENTTYPE", -1);
         jsonParse();
     }
+
     private void jsonParse() {
 
         String url = "http://fcorder.fcudata.science/order.php";
@@ -56,7 +60,7 @@ public class SunnyBankPaymentVM extends AppCompatActivity {
         }
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("paymentType", "1");
+            parameters.put("paymentType", String.valueOf(paymentType));
             parameters.put("location", "0");
             parameters.put("memberId", userProfileManager.getString("NID","").replace("\"",""));
             parameters.put("product", products);

@@ -16,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.root.fcpay.CoreData.OrderDetailCheckItem;
-import com.example.root.fcpay.Order.OrderTable.OrderTableViewModel;
-import com.example.root.fcpay.Payment.SunnyBankPaymentVM;
+import com.example.root.fcpay.Payment.Type.PaymentTypeController;
+import com.example.root.fcpay.Payment.iSunny.SunnyBankPaymentVM;
 import com.example.root.fcpay.R;
 
 import java.util.ArrayList;
@@ -83,20 +83,6 @@ public class OrderDetailUIViewController extends AppCompatActivity {
         }
     }
 
-    private void showDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("訂餐確認")
-                .setNegativeButton("否", null).setPositiveButton("是", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();   //完成，關閉頁面
-                        startActivity(new Intent(OrderDetailUIViewController.this,SunnyBankPaymentVM.class));
-                    }
-
-                }).setMessage("是否送出訂單？").create();
-        dialog.show();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
@@ -105,12 +91,13 @@ public class OrderDetailUIViewController extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.toPayment:
-                showDialog();
+                startActivity(new Intent(OrderDetailUIViewController.this,PaymentTypeController.class));
                 return true;
             case android.R.id.home:
                 finish();   //關閉頁面
